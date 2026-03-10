@@ -1,0 +1,21 @@
+{
+  "short_name": "SEOPower",
+  "name": "SEO Master Tool PWA",
+  "icons": [
+    {
+      "src": "assets/img/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/index.html",
+  "background_color": "#f3f4f6",
+  "display": "standalone",
+  "theme_color": "#2563eb",
+  "description": "Tool SEO profesional berasaskan GitHub Pages."
+}
