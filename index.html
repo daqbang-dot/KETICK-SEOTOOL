@@ -33,7 +33,7 @@
         </div>
     </main>
 
-    <script>
+        <script>
         // Pendaftaran Service Worker (Penting untuk PWA)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -45,15 +45,10 @@
             });
         }
 
-        function startAudit() {
-            const url = document.getElementById('urlInput').value;
-            if(!url) return alert("Sila masukkan URL!");
-            
-            document.getElementById('results').classList.remove('hidden');
-            document.getElementById('reportContent').innerHTML = `<p class="text-blue-600 animate-pulse">Sedang menganalisis ${url}...</p>`;
-            
-            // Logik API akan diletakkan dalam assets/js/api-handler.js nanti
-        }
+        // NOTA: Fungsi startAudit() sudah ada dalam api-handler.js, 
+        // jadi kita tidak perlu tulis lagi di sini untuk elak konflik.
     </script>
+    
+    <script src="assets/js/api-handler.js"></script>
 </body>
 </html>
