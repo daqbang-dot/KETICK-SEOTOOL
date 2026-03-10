@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Master Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    
+    <nav class="bg-blue-600 p-4 text-white shadow-lg">
+        <h1 class="text-xl font-bold text-center">SEO MASTER TOOL</h1>
+    </nav>
+
+    <main class="p-4 max-w-md mx-auto">
+        <div class="bg-white p-6 rounded-xl shadow-md">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Masukkan URL Laman Web</label>
+            <input type="url" id="urlInput" placeholder="https://contoh.com" 
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            
+            <button onclick="startAudit()" 
+                    class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
+                Mula Analisis SEO
+            </button>
+        </div>
+
+        <div id="results" class="mt-6 space-y-4 hidden">
+            <h2 class="font-semibold text-gray-800">Keputusan Audit:</h2>
+            <div id="reportContent" class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                </div>
+        </div>
+    </main>
+
+    <script>
+        // Pendaftaran Service Worker (Penting untuk PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('PWA Ready!');
+                }).catch(err => {
+                    console.log('PWA Failed!', err);
+                });
+            });
+        }
+
+        function startAudit() {
+            const url = document.getElementById('urlInput').value;
+            if(!url) return alert("Sila masukkan URL!");
+            
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('reportContent').innerHTML = `<p class="text-blue-600 animate-pulse">Sedang menganalisis ${url}...</p>`;
+            
+            // Logik API akan diletakkan dalam assets/js/api-handler.js nanti
+        }
+    </script>
+</body>
+</html>
