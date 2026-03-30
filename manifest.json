@@ -1,21 +1,18 @@
 {
-  "short_name": "SEOPower",
-  "name": "SEO Master Tool PWA",
+  "name": "Ketick SEO Master",
+  "short_name": "Ketick SEO",
+  "description": "Audit SEO & Prestasi Website Pantas oleh Ketick Hub",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#007bff",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "assets/img/icon-192.png",
+      "src": "icon.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "assets/img/icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "any maskable"
     }
-  ],
-  "start_url": "/index.html",
-  "background_color": "#f3f4f6",
-  "display": "standalone",
-  "theme_color": "#2563eb",
-  "description": "Tool SEO profesional berasaskan GitHub Pages."
+  ]
 }
