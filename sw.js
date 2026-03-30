@@ -1,22 +1,29 @@
-const CACHE_NAME = 'seo-tool-v1';
-const assets = [
+// Service Worker Asas untuk PWA Install
+const CACHE_NAME = 'ketick-seo-v1';
+const urlsToCache = [
   '/',
-  '/index.html',
-  'https://cdn.tailwindcss.com'
+  'index.html',
+  'manifest.json',
+  'icon.png'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(assets);
-    })
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(response => {
-      return response || fetch(e.request);
-    })
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
   );
 });
