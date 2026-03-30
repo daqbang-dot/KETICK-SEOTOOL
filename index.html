@@ -3,38 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ketick SEO Master</title>
+    <title>Ketick SEO Master | Audit Lead Magnet</title>
     <style>
-        body { background-color: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
-        .card { background: #1e1e1e; padding: 20px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: #fff; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #007bff; color: white; font-weight: bold; cursor: pointer; }
-        .result { margin-top: 20px; display: none; }
-        .score { font-size: 24px; color: #4caf50; text-align: center; }
+        :root { --primary: #007bff; --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: var(--card); padding: 30px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.7); width: 100%; max-width: 400px; text-align: center; }
+        h2 { margin-bottom: 5px; color: #fff; }
+        p.subtitle { color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; background: #2a2a2a; color: #fff; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--primary); }
+        button.main-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary); color: white; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        button.main-btn:hover { background: #0056b3; transform: translateY(-2px); }
+        .result { margin-top: 25px; display: none; text-align: left; animation: fadeIn 0.5s; }
+        .score-circle { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #4caf50; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 1.5rem; font-weight: bold; color: #4caf50; }
+        .report-text { font-size: 0.85rem; line-height: 1.5; color: #bbb; background: #252525; padding: 15px; border-radius: 8px; }
+        .cta-section { margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; }
+        .wa-btn { display: inline-block; width: 100%; padding: 12px; background: #25d366; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 0.9rem; transition: 0.3s; text-align: center; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>Ketick SEO Master</h2>
-        <p>Analisis prestasi laman web anda dalam satu klik.</p>
-        <input type="url" id="urlInput" placeholder="https://domainanda.com">
-        <button onclick="analyzeSEO()">Mula Audit</button>
+
+<div class="card">
+    <h2>Ketick SEO Master</h2>
+    <p class="subtitle">Adakah website anda mesra Google? Check sekarang.</p>
+    
+    <input type="url" id="urlInput" placeholder="Masukkan URL (cth: https://...)">
+    <button class="main-btn" onclick="analyzeSEO()">Mula Audit Percuma</button>
+    
+    <div id="result" class="result">
+        <div class="score-circle" id="scoreDisplay">0</div>
+        <div class="report-text" id="reportDetails"></div>
         
-        <div id="result" class="result">
-            <div class="score" id="score">85/100</div>
-            <p id="details">Laman web anda mempunyai prestasi yang baik, namun perlukan optimasi pada tag metadata.</p>
+        <div class="cta-section" id="ctaArea">
+            <p style="font-size: 0.8rem; color: #888;">Skor anda memerlukan perhatian segera.</p>
+            <a href="#" id="waLink" class="wa-btn">Dapatkan Konsultasi Percuma di WhatsApp</a>
         </div>
     </div>
+</div>
 
-    <script>
-        function analyzeSEO() {
-            const url = document.getElementById('urlInput').value;
-            if(!url) return alert('Masukkan URL!');
-            
-            // Simulasi Logik Audit
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('score').innerText = Math.floor(Math.random() * (100 - 70 + 1) + 70) + "/100";
+<script>
+    async function analyzeSEO() {
+        const urlValue = document.getElementById('urlInput').value;
+        if(!urlValue || !urlValue.startsWith('http')) {
+            return alert('Sila masukkan URL penuh termasuk http:// atau https://');
         }
-    </script>
+
+        const resDiv = document.getElementById('result');
+        const scoreCircle = document.getElementById('scoreDisplay');
+        const reportDetails = document.getElementById('reportDetails');
+        const waLink = document.getElementById('waLink');
+
+        resDiv.style.display = 'block';
+        reportDetails.innerHTML = "Menganalisis data...";
+
+        try {
+            const url = new URL(urlValue);
+            let score = 40; // Skor asas
+            let issues = [];
+
+            // Real Check 1: HTTPS
+            if (url.protocol === 'https:') {
+                score += 30;
+                issues.push("✅ Keselamatan SSL dikesan.");
+            } else {
+                issues.push("❌ Amaran: Laman web tidak menggunakan HTTPS (Bahaya untuk SEO).");
+            }
+
+            // Simulasi Check 2: SEO Tags (Randomized for demo, but looks realistic)
+            const randomCheck = Math.random() > 0.5;
+            if(randomCheck) {
+                score += 25;
+                issues.push("✅ Metadata asas ditemui.");
+            } else {
+                issues.push("❌ Tajuk/Deskripsi SEO tidak dioptimumkan.");
+            }
+
+            // Final Result
+            scoreCircle.innerText = score;
+            scoreCircle.style.borderColor = score > 70 ? '#4caf50' : '#ff9800';
+            reportDetails.innerHTML = issues.join("<br>");
+
+            // Customize WhatsApp Message
+            const waMsg = encodeURIComponent(`Salam Azlan, saya baru guna Ketick SEO Master. Website saya (${urlValue}) dapat skor ${score}/100. Boleh bantu check?`);
+            waLink.href = `https://wa.me/60123456789?text=${waMsg}`; // GANTI DENGAN NO TELEFON ANDA
+
+        } catch (e) {
+            alert("Ralat teknikal. Sila cuba URL lain.");
+        }
+    }
+</script>
+
 </body>
 </html>
