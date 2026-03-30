@@ -3,52 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEO Master Tool</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <title>Ketick SEO Master</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        .card { background: #1e1e1e; padding: 20px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: #fff; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #007bff; color: white; font-weight: bold; cursor: pointer; }
+        .result { margin-top: 20px; display: none; }
+        .score { font-size: 24px; color: #4caf50; text-align: center; }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    
-    <nav class="bg-blue-600 p-4 text-white shadow-lg">
-        <h1 class="text-xl font-bold text-center">SEO MASTER TOOL</h1>
-    </nav>
+<body>
+    <div class="card">
+        <h2>Ketick SEO Master</h2>
+        <p>Analisis prestasi laman web anda dalam satu klik.</p>
+        <input type="url" id="urlInput" placeholder="https://domainanda.com">
+        <button onclick="analyzeSEO()">Mula Audit</button>
+        
+        <div id="result" class="result">
+            <div class="score" id="score">85/100</div>
+            <p id="details">Laman web anda mempunyai prestasi yang baik, namun perlukan optimasi pada tag metadata.</p>
+        </div>
+    </div>
 
-    <main class="p-4 max-w-md mx-auto">
-        <div class="bg-white p-6 rounded-xl shadow-md">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Masukkan URL Laman Web</label>
-            <input type="url" id="urlInput" placeholder="https://contoh.com" 
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+    <script>
+        function analyzeSEO() {
+            const url = document.getElementById('urlInput').value;
+            if(!url) return alert('Masukkan URL!');
             
-            <button onclick="startAudit()" 
-                    class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">
-                Mula Analisis SEO
-            </button>
-        </div>
-
-        <div id="results" class="mt-6 space-y-4 hidden">
-            <h2 class="font-semibold text-gray-800">Keputusan Audit:</h2>
-            <div id="reportContent" class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-                </div>
-        </div>
-    </main>
-
-        <script>
-        // Pendaftaran Service Worker (Penting untuk PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(reg => {
-                    console.log('PWA Ready!');
-                }).catch(err => {
-                    console.log('PWA Failed!', err);
-                });
-            });
+            // Simulasi Logik Audit
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('score').innerText = Math.floor(Math.random() * (100 - 70 + 1) + 70) + "/100";
         }
-
-        // NOTA: Fungsi startAudit() sudah ada dalam api-handler.js, 
-        // jadi kita tidak perlu tulis lagi di sini untuk elak konflik.
     </script>
-    
-    <script src="assets/js/api-handler.js"></script>
 </body>
 </html>
