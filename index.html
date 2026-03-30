@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ketick SEO Master | Audit Lead Magnet</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007bff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ketick SEO">
+    <link rel="apple-touch-icon" href="icon.png">
+
     <style>
         :root { --primary: #007bff; --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --danger: #ff4d4d; --warning: #ffae00; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box;}
         .card { background: var(--card); padding: 30px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.7); width: 100%; max-width: 450px; text-align: center; }
-        h2 { margin-bottom: 5px; color: #fff; letter-spacing: 1px; }
+        h2 { margin-bottom: 5px; color: #fff; letter-spacing: 1px; margin-top: 0;}
         p.subtitle { color: #888; font-size: 0.9rem; margin-bottom: 20px; }
         input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; background: #2a2a2a; color: #fff; box-sizing: border-box; outline: none; transition: 0.3s; font-size: 1rem; }
         input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(0,123,255,0.2); }
         button.main-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: var(--primary); color: white; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s; margin-top: 10px; }
         button.main-btn:hover { background: #0056b3; transform: translateY(-2px); }
+        
+        /* PWA Install Button Style */
+        #installBtn { display: none; margin-top: 15px; background: #444; border: 1px solid #555; }
+        #installBtn:hover { background: #555; }
+
         .result { margin-top: 25px; display: none; text-align: left; animation: fadeIn 0.5s; }
         .score-circle { width: 90px; height: 90px; border-radius: 50%; border: 5px solid var(--danger); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.8rem; font-weight: bold; color: var(--danger); background: rgba(255,77,77,0.1); }
         .report-content { background: #252525; padding: 20px; border-radius: 12px; border: 1px solid #333; }
@@ -25,6 +39,7 @@
         .cta-section { margin-top: 20px; }
         .wa-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background: #25d366; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 1rem; transition: 0.3s; box-sizing: border-box; }
         .wa-btn:hover { background: #1ebd5b; transform: scale(1.02); }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -36,6 +51,8 @@
     
     <input type="url" id="urlInput" placeholder="https://domainanda.com">
     <button class="main-btn" onclick="analyzeSEO()">Mula Audit Percuma</button>
+    
+    <button id="installBtn" class="main-btn">📥 Install Sebagai App</button>
     
     <div id="result" class="result">
         <div class="score-circle" id="scoreDisplay">0</div>
@@ -50,10 +67,43 @@
 </div>
 
 <script>
+    // --- Logik PWA Install & Service Worker ---
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response: ${outcome}`);
+            deferredPrompt = null;
+            installBtn.style.display = 'none';
+        }
+    });
+
+    window.addEventListener('appinstalled', () => {
+        installBtn.style.display = 'none';
+    });
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW Registered'))
+                .catch(err => console.log('SW Registration Failed'));
+        });
+    }
+
+    // --- Logik Analisis SEO ---
     async function analyzeSEO() {
         const urlValue = document.getElementById('urlInput').value;
         if(!urlValue || !urlValue.startsWith('http')) {
-            return alert('Sila masukkan URL penuh termasuk https://');
+            return alert('Sila masukkan URL penuh termasuk http:// atau https://');
         }
 
         const resDiv = document.getElementById('result');
@@ -64,13 +114,10 @@
         resDiv.style.display = 'block';
         reportDetails.innerHTML = "<p style='text-align:center; font-size:0.9rem;'>🔍 Menganalisis metadata & struktur server...</p>";
 
-        // Simulasi analisis (1.5 saat)
         setTimeout(() => {
-            // Set skor rendah untuk awareness
             let score = Math.floor(Math.random() * (65 - 45 + 1) + 45); 
             scoreCircle.innerText = score;
             
-            // Paparan Laporan Strategik
             reportDetails.innerHTML = `
                 <div class="issue-box">
                     <strong style="color: var(--danger);">⚠️ ISU: Tajuk & Deskripsi SEO Lemah</strong>
@@ -82,7 +129,7 @@
                     </ul>
                 </div>
 
-                <div class="issue-box" style="margin-top:15px; border-top:1px solid #333; pt-15px;">
+                <div class="issue-box" style="margin-top:15px; border-top:1px solid #333; padding-top:15px;">
                     <strong style="color: var(--warning);">⚠️ ISU: Struktur Skor Rendah</strong>
                     <p>Google 'menghukum' ranking website yang mempunyai masalah teknikal.</p>
                     <ul>
@@ -97,7 +144,7 @@
                 </p>
             `;
 
-            // Setup WhatsApp dengan Pre-filled Message (GANTI NOMBOR ANDA DI SINI)
+            // Setup WhatsApp (GANTI NOMBOR ANDA DI SINI)
             const myNumber = "60123456789"; 
             const waMsg = encodeURIComponent(`Salam Azlan, saya baru audit website (${urlValue}) di Ketick Hub. Skor saya cuma ${score}/100. Saya perlukan bantuan untuk baiki SEO Metadata & Isu Teknikal website saya.`);
             waLink.href = `https://wa.me/${myNumber}?text=${waMsg}`;
