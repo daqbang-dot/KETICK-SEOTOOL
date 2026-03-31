@@ -1,5 +1,5 @@
 // Service Worker Asas untuk PWA Install
-const CACHE_NAME = 'ketick-seo-v1';
+const CACHE_NAME = 'ketick-seo-v2';
 const urlsToCache = [
   '/',
   'index.html',
